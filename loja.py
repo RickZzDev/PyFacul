@@ -84,6 +84,7 @@ class Produto:
 
 	
 	def calcular_preco_com_frete(self):
+		#TODO calcular o tal do frete
 		return self.__preco
 		"""
 		Método que calcula o valor final do produto com o frete incluso.
@@ -122,6 +123,19 @@ class ProdutoFisico(Produto):
 
 	@peso.setter
 	def peso(self, novo_peso):
+		try:
+			if(isinstance(novo_peso,int)):
+				if(novo_peso > 0):
+					self.__preso = novo_peso
+				else:
+					raise ValueError
+			else:
+				raise TypeError
+		except TypeError:
+			print("Tipo não aceito")
+		except ValueError:
+			print("Valor abaixo de zero")	
+
 		"""
 		Setter peso: recebe um novo_peso e atualiza o valor do atributo	privado
 		peso com esse valor (que representa o peso do produto em gramas).
@@ -132,10 +146,10 @@ class ProdutoFisico(Produto):
 		Caso novo_peso seja do tipo int, verifique se seu valor é maior que zero.
 		Se for menor ou igual a zero, lance uma exceção do tipo ValueError.
 		"""
-		pass
 
 	
 	def peso_em_kg(self):
+		return self.peso / 1000
 		"""
 		Método que calcula o peso do produto em quilogramas.
 		Deve devolver (retornar) o valor do peso convertido em quilogramas.
@@ -144,7 +158,6 @@ class ProdutoFisico(Produto):
 			- Se o valor do atributo privado peso for 7500, este método retorna 7.5;
 			- Se o valor do atributo privado peso for 600, este método retorna 0.6;
 		"""
-		pass
 
 
 	def calcular_preco_com_frete(self):
