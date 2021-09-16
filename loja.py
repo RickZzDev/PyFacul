@@ -11,8 +11,8 @@ class Produto:
 
 	def __init__(self, nome, preco):
 
-		nome(nome)
-		preco(preco)
+		self.nome = nome
+		self.preco = preco
 		"""
 		Inicializa os atributos privados nome e preco.
 
@@ -23,22 +23,24 @@ class Produto:
 
 	@property
 	def nome(self):
-		self.__nome
+
+		return self.__nome
 	
 	@property
 	def preco(self):
-		self.__preco
+		return self.__preco
 
 	
 	@nome.setter
-	def nome(self, novo_nome: "str"):
+	def nome(self, novo_nome):
+		print("SETTER")
 		try:
 			if(len(novo_nome) > 0):
 				self.__nome = novo_nome
 			else:
 				raise ValueError
-		except ValueError: 
-			print("Erro, valor menor que 0")
+		except ValueError:
+			raise ValueError
 
 
 		
@@ -55,6 +57,7 @@ class Produto:
 	
 	@preco.setter
 	def preco(self, novo_preco: "float"):
+		print("SETTER PRECO")
 		try:
 			if(isinstance(novo_preco,int) or isinstance(novo_preco,float)):
 				if(novo_preco > 0):
@@ -64,9 +67,9 @@ class Produto:
 			else:
 				raise TypeError
 		except TypeError:
-			print("Tipo não aceito")
+			raise TypeError
 		except ValueError:
-			print("Valor abaixo de zero")	
+			raise ValueError
 
 		"""
 		Setter preco: recebe um novo_preco e atualiza o valor do atributo privado
@@ -97,8 +100,8 @@ class ProdutoFisico(Produto):
 	"""
 
 	def __init__(self, nome, preco, peso):
-		super().__init__(nome,preco)
-		peso(peso)
+		super().__init__(nome, preco)
+		self.peso = peso
 		"""
 		
 		Inicializa nome e preco utilizando o construtor da superclasse Produto, 
@@ -112,27 +115,27 @@ class ProdutoFisico(Produto):
 
 	@property
 	def peso(self):
-		return self.__preco
+		return self.__peso
 
 		"""
 		Property peso: devolve (retorna) o valor do atributo privado peso.
 		"""
-	
+
 
 	@peso.setter
 	def peso(self, novo_peso):
 		try:
 			if(isinstance(novo_peso,int)):
 				if(novo_peso > 0):
-					self.__preso = novo_peso
+					self.__peso = novo_peso
 				else:
 					raise ValueError
 			else:
 				raise TypeError
 		except TypeError:
-			print("Tipo não aceito")
+			raise TypeError
 		except ValueError:
-			print("Valor abaixo de zero")	
+			raise ValueError
 
 		"""
 		Setter peso: recebe um novo_peso e atualiza o valor do atributo	privado
@@ -157,10 +160,12 @@ class ProdutoFisico(Produto):
 			- Se o valor do atributo privado peso for 600, este método retorna 0.6;
 		"""
 
-
 	def calcular_preco_com_frete(self):
+		print(super().preco)
 		newprice = super().preco + (self.peso_em_kg() * 5.00)
-		return super().__preco(self, newprice)
+		super().preco = newprice
+		settedPrice = super().preco
+		return settedPrice
 
 		"""
 		Método que calcula o valor final do produto físico com o frete incluso.
@@ -177,16 +182,20 @@ class ProdutoFisico(Produto):
 		O calculo: 1kg X R$5,00
 		
 		"""
-		pass
 
 
-class ProdutoEletronico:
+
+class ProdutoEletronico(ProdutoFisico):
 	"""
 	Classe ProdutoEletronico: deve representar os elementos básicos de um produto eletrônico.
 	Esta classe herda da classe ProdutoFisico.
 	"""
 
 	def __init__(self, nome, preco, peso, tensao, tempo_garantia):
+		super().__init__(nome, preco, peso)
+		self.__tempo_garantia = tempo_garantia
+		self.tensao = tensao
+
 		"""
 		Inicializa nome, preco e peso utilizando o construtor da superclasse ProdutoFisico, 
 		(use a função super()), e também inicializa os atributos privados tensao e
@@ -198,27 +207,42 @@ class ProdutoEletronico:
 			- O atributo privado tempo_garantia deve ser inicializado diretamente
 			no construtor, sem necessidade de validação.
 		"""
-		pass
+
 
 	
 	@property
 	def tensao(self):
+		return self.__tensao
 		"""
 		Property tensao: devolve (retorna) o valor do atributo privado tensao.
 		"""
-		pass
+
 
 
 	@property
 	def tempo_garantia(self):
+		return  self.__tempo_garantia
 		"""
 		Property tempo_garantia: devolve (retorna) o valor do atributo privado tempo_garantia.
 		"""
-		pass
+
 
 	
 	@tensao.setter
 	def tensao(self, nova_tensao):
+		try:
+			if(isinstance(nova_tensao,int)):
+				if(nova_tensao == 0 or nova_tensao == 127 or nova_tensao == 220):
+					self.__preso = nova_tensao
+				else:
+					raise ValueError
+			else:
+				raise TypeError
+		except TypeError:
+			raise TypeError
+		except ValueError:
+			raise ValueError
+
 		"""
 		Setter tensao: recebe uma nova_tensao e atualiza o valor do atributo privado
 		tensao com esse valor (que representa a tensão de um aparelho eletrônico, 
@@ -232,10 +256,13 @@ class ProdutoEletronico:
 		127 ou 220. Caso nova_tensao seja diferente desses valores, lance uma 
 		exceção do tipo ValueError.
 		"""
-		pass
+
 
 
 	def calcular_preco_com_frete(self):
+		frete = super().calcular_preco_com_frete()
+		total_frete = frete + (frete * 0.01)
+		return total_frete
 		"""
 		Método que calcula o valor final do produto eletrônico com o frete incluso.
 		O cálculo é o mesmo que o produto físico, mas deverá ser acrescido 1% 
@@ -253,16 +280,19 @@ class ProdutoEletronico:
 			- Se o produto (preço) custa R$50 e seu peso é 2000 gramas, retorna R$60.6;
 			- Se o produto (preço) custa R$10 e seu peso é 800 gramas, retorna R$14.14;
 		"""
-		pass
 
 
-class Ebook:
+
+class Ebook(Produto):
 	"""
 	Classe Ebook: deve representar os elementos básicos de um ebook (livro digital).
 	Esta classe herda da classe Produto.
 	"""
 
 	def __init__(self, nome, preco, autor, numero_paginas):
+		super().__init__(nome, preco)
+		self.__autor = autor
+		self.numero_paginas = numero_paginas
 		"""
 		Inicializa nome e preco utilizando o construtor da superclasse Produto, 
 		(use a função super()), e também inicializa os atributos privados autor e
@@ -274,11 +304,13 @@ class Ebook:
 			construtor.	Ao invés disso, utilize o setter "numero_paginas" para
 			inicializá-lo indiretamente, pois dessa forma ele será validado.
 		"""
-		pass
+
 	
 
 	@property
 	def nome_exibicao(self):
+		livro_autor = f"{super().nome} ({self.__autor})"
+		return livro_autor
 		"""
 		Property nome_exibicao: devolve (retorna) uma string com o nome e autor
 		do livro no seguinte formato (sem aspas): "Nome (Autor)"
@@ -290,20 +322,29 @@ class Ebook:
 			- Se nome é "O senhor dos anéis" e autor é "J. R. R. Tolkien", deve
 			devolver (retornar) uma string com: "O senhor dos anéis (J. R. R. Tolkien)";
 		"""
-		pass
+		
 
 
 	@property
 	def numero_paginas(self):
+		return self.__numero_paginas
 		"""
 		Property numero_paginas: devolve (retorna) o valor do atributo 
 		privado numero_paginas.
 		"""
-		pass
+
 	
 
 	@numero_paginas.setter
 	def numero_paginas(self, valor):
+
+		try:
+			if (valor > 0):
+				self.__numero_paginas = valor
+			else:
+				raise ValueError
+		except ValueError as e:
+			raise e
 		"""
 		Setter numero_paginas: recebe um valor e atualiza o atributo privado
 		numero_paginas com esse valor.
@@ -312,4 +353,3 @@ class Ebook:
 		se o valor é maior que zero. Caso contrário (se valor for menor ou igual
 		a zero), lance um erro do tipo ValueError.
 		"""
-		pass
