@@ -162,9 +162,10 @@ class ProdutoFisico(Produto):
 
 	def calcular_preco_com_frete(self):
 		print(super().preco)
-		newprice = super().preco + (self.peso_em_kg() * 5.00)
-		super().preco = newprice
-		settedPrice = super().preco
+
+		newprice = Produto.preco.fget(self) + (self.peso_em_kg() * 5.00)
+		Produto.preco.fset(self, newprice)
+		settedPrice = Produto.preco.fget(self)
 		return settedPrice
 
 		"""
