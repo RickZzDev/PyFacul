@@ -234,7 +234,7 @@ class ProdutoEletronico(ProdutoFisico):
 		try:
 			if(isinstance(nova_tensao,int)):
 				if(nova_tensao == 0 or nova_tensao == 127 or nova_tensao == 220):
-					self.__preso = nova_tensao
+					self.__tensao = nova_tensao
 				else:
 					raise ValueError
 			else:
