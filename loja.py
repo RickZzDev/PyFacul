@@ -20,9 +20,7 @@ class Produto:
 		disso, utilize os setters "nome" e "preco" para inicializá-los indiretamente,
 		pois dessa forma eles serão validados (veja a descrição dos setters na sequência).
 		"""
-		pass
 
-	
 	@property
 	def nome(self):
 		self.__nome
@@ -56,7 +54,7 @@ class Produto:
 
 	
 	@preco.setter
-	def preco(self, novo_preco):
+	def preco(self, novo_preco: "float"):
 		try:
 			if(isinstance(novo_preco,int) or isinstance(novo_preco,float)):
 				if(novo_preco > 0):
@@ -161,6 +159,9 @@ class ProdutoFisico(Produto):
 
 
 	def calcular_preco_com_frete(self):
+		newprice = super().preco + (self.peso_em_kg() * 5.00)
+		return super().__preco(self, newprice)
+
 		"""
 		Método que calcula o valor final do produto físico com o frete incluso.
 		Para cada quilograma no peso do produto, acrescente R$5 ao seu valor final.
@@ -172,7 +173,9 @@ class ProdutoFisico(Produto):
 			- Se o produto (preço) custa R$100 e seu peso é 1000 gramas, retorna R$105;
 			- Se o produto (preço) custa R$50 e seu peso é 2500 gramas, retorna R$62.5;
 			- Se o produto (preço) custa R$10 e seu peso é 100 gramas, retorna R$10.5;
-			
+		
+		O calculo: 1kg X R$5,00
+		
 		"""
 		pass
 
